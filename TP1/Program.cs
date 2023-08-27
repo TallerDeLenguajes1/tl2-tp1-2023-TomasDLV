@@ -5,38 +5,38 @@
         static void Main()
         {
             Cadeteria cadeteria = new Cadeteria("cadeteria.csv", "cadetes.csv"); // Inicialia0a la Cadeteria con los archivos
-            Console.WriteLine(cadeteria.ListaCadetes[0].Nombre);
             while (true)
             {
                 Console.WriteLine("==== Gestión de Pedidos ====");
-                Console.WriteLine("a) Dar de alta pedidos");
-                Console.WriteLine("b) Asignar pedidos a cadetes");
-                Console.WriteLine("c) Cambiar estado de pedidos");
-                Console.WriteLine("d) Reasignar pedido a otro cadete");
-                Console.WriteLine("e) Mostrar informe de pedidos");
-                Console.WriteLine("x) Salir");
+                Console.WriteLine("1) Dar de alta pedidos");
+                Console.WriteLine("2) Asignar pedidos a cadetes");
+                Console.WriteLine("3) Cambiar estado de pedidos");
+                Console.WriteLine("4) Reasignar pedido a otro cadete");
+                Console.WriteLine("5) Mostrar informe de pedidos");
+                Console.WriteLine("6) Salir");
 
                 Console.Write("Seleccione una opción: ");
                 string opcion = Console.ReadLine();
 
                 switch (opcion.ToLower())
                 {
-                    case "a":
+                    case "1":
                         // Lógica para dar de alta pedidos
                         Console.WriteLine("Ingrese el id del pedido a realizar");
                         string inputId = Console.ReadLine();
                         int.TryParse(inputId, out int id);
                         cadeteria.AltaPedido(id);
                         break;
-                    case "b":
+                    case "2":
                         // Lógica para asignar pedidos a cadetes
                         Console.WriteLine("Estamos asignando el pedido a un cadete disponible...");
                         cadeteria.AsignarPedido();
                         break;
-                    case "c":
+                    case "3":
                         // Lógica para cambiar estado de pedidos
+                        cadeteria.CambiarEstado();
                         break;
-                    case "d":
+                    case "4":
                         // Lógica para reasignar pedido a otro cadete
                         Console.WriteLine("Ingrese el id del pedido a reasignar");
                         string inputIdPedido = Console.ReadLine();
@@ -47,10 +47,13 @@
 
                         cadeteria.ReasignarPedido(idPedido,idNuevoCadete);
                         break;
-                    case "e":
+                    case "5":
                         // Lógica para mostrar informe de pedidos
+                        Console.WriteLine("Aqui tienes el informe:");
+                        Informe informe = new Informe(cadeteria);
+                        informe.MostrarInforme();
                         break;
-                    case "x":
+                    case "6":
                         Console.WriteLine("Saliendo del programa.");
                         return;
                     default:

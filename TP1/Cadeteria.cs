@@ -4,17 +4,18 @@ namespace tp1
     {
         private string nombre;
         private int telefono;
-        private List<Cadete> listaCadetes;
+        private List<Cadete> listaCadetes = new List<Cadete>();
         private int nroPedidosCreados;
 
-        internal List<Cadete> ListaCadetes { get => listaCadetes; set => listaCadetes = value; }
+        public List<Cadete> ListaCadetes { get => listaCadetes; set => listaCadetes = value; }
         public int NroPedidosCreados { get => nroPedidosCreados; set => nroPedidosCreados = value; }
+        public string Nombre { get => nombre; }
+        public int Telefono { get => telefono; }
 
         public Cadeteria(string archivoInfoCadeteria, string archivoCadetes)
         {
             CargarInfoCadeteria(archivoInfoCadeteria);
             CargarCadetes(archivoCadetes);
-            this.NroPedidosCreados = 0;
         }
 
         private void CargarInfoCadeteria(string archivoInfoCadeteria)
@@ -24,8 +25,10 @@ namespace tp1
                 using (StreamReader reader = new StreamReader(archivoInfoCadeteria))
                 {
                     string[] datos = reader.ReadLine().Split(',');
-                    nombre = datos[0];
-                    telefono = int.Parse(datos[1]);
+                    this.nombre = datos[0];
+                    this.telefono = int.Parse(datos[1]);
+                    NroPedidosCreados = int.Parse(datos[2]); // Carga el valor de nroPedidosCreados
+
                 }
             }
             catch (Exception ex)
@@ -33,7 +36,7 @@ namespace tp1
                 Console.WriteLine("Error al cargar la información de la cadetería: " + ex.Message);
             }
         }
-        private void CargarCadetes(string archivoCadetes)
+        public void CargarCadetes(string archivoCadetes)
         {
             try
             {
@@ -65,14 +68,14 @@ namespace tp1
             {
                 Random random = new Random();
                 int indiceAleatorio = random.Next(0, ListaCadetes.Count);
-                Cadete cadeteAleatorio = ListaCadetes[indiceAleatorio];
+                Cadete cadeteAleatorio = ListaCadetes[indiceAleatorio]; // Elijo un cadete de manera aleatoria
 
-                Pedidos nuevoPedido = new Pedidos(NroPedidosCreados + 1); // Crea una instancia de Pedido necesito AGREGAR OBS
-                NroPedidosCreados += 1;
+                Pedidos nuevoPedido = new Pedidos(NroPedidosCreados + 1); // Crea una instancia de Pedido ; NOTA: necesito AGREGAR OBS
+                NroPedidosCreados += 1; // Incremento la cantidad de pedidos creados
 
-                cadeteAleatorio.AgregarPedido(nuevoPedido); // Agrega el pedido a la lista de pedidos del cadete
+                cadeteAleatorio.AgregarPedido(nuevoPedido); // Agrega el pedido a la lista de pedidos del cadete Elegido
 
-                Console.WriteLine("Pedido asignado al cadete: " + cadeteAleatorio.Nombre);
+                Console.WriteLine("Pedido nro "+nuevoPedido.Nro+" asignado al cadete: " + cadeteAleatorio.Nombre);
             }
             else
             {
@@ -81,9 +84,9 @@ namespace tp1
         }
 
 
-        public void ReasignarPedido(int idPedido, int nuevoIdCadete) //Asignar a un cadete en particular o random?
+        public void ReasignarPedido(int idPedido, int nuevoIdCadete) // Asignar a un cadete en particular o random?
         {
-            Cadete nuevoCadete = listaCadetes.FirstOrDefault(cadete => cadete.Id == nuevoIdCadete);
+            Cadete nuevoCadete = ListaCadetes.FirstOrDefault(cadete => cadete.Id == nuevoIdCadete); // DEBO SOLUCIONAR QUE PUEDA TOMAR VALORES NULL?
 
             if (nuevoCadete != null)
             {
@@ -107,21 +110,71 @@ namespace tp1
             }
         }
 
-        public void EntregarPedido(int idPedido)
+        public void CambiarEstado() // Este metodo recibe por parametro la id del pedido a entregar, busca que cadete lo posee y lo cambia de estado
         {
-            foreach (Cadete cadete in ListaCadetes)
+
+            Console.WriteLine("Ingrese el ID del pedido a cambiar de estado: ");
+            if (int.TryParse(Console.ReadLine(), out int idPedido))
             {
-                for (int i = 0; i < cadete.ListaPedidos.Count; i++)
+                Console.WriteLine("Seleccione el estado al que cambiar:");
+                Console.WriteLine("a) Pendiente");
+                Console.WriteLine("b) En Camino");
+                Console.WriteLine("c) Entregado");
+
+                Console.Write("Opción: ");
+                string opcionEstado = Console.ReadLine();
+
+                string nuevoEstado = "";
+
+                switch (opcionEstado.ToLower())
                 {
-                    if (idPedido == cadete.ListaPedidos[i].Nro)
-                    {
-                        cadete.ListaPedidos[i].Estado = "Entregado";
-                        Console.WriteLine("El pedido nro " + idPedido + " ha sido entregado.");
+                    case "a":
+                        nuevoEstado = "Pendiente";
+                        break;
+                    case "b":
+                        nuevoEstado = "EnCamino";
+                        break;
+                    case "c":
+                        nuevoEstado = "Entregado";
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
                         return;
+                }
+
+                foreach (Cadete cadete in ListaCadetes)
+                {
+                    for (int i = 0; i < cadete.ListaPedidos.Count; i++)
+                    {
+                        if (idPedido == cadete.ListaPedidos[i].Nro)
+                        {
+                            cadete.ListaPedidos[i].Estado = nuevoEstado;
+                            Console.WriteLine("El pedido nro " + idPedido + " cambio de estado a : " + nuevoEstado);
+                            return;
+                        }
                     }
                 }
+                // Aquí puedes llamar al método en la Cadeteria para cambiar el estado del pedido con "idPedido" al "nuevoEstado"
             }
-
+            else
+            {
+                Console.WriteLine("Ingrese un ID válido.");
+            }
         }
+        public void AltaPedido(int idPedido){ // Esta funcion da de alta un pedio por una id recibida
+            foreach (Cadete cadete in ListaCadetes)
+            {
+                var pedidoAlta = cadete.ListaPedidos.FirstOrDefault(pedido => pedido.Nro == idPedido);
+                if (pedidoAlta != null)
+                {
+                    cadete.ListaPedidos.Remove(pedidoAlta);
+                    Console.WriteLine("El pedido " + idPedido + " ha sido dado de alta correctamente");
+                    return;
+                }
+            }
+            Console.WriteLine("No se encontro el pedido " + idPedido + ".");
+        }
+
     }
+
 }
