@@ -6,7 +6,7 @@ namespace tp1
         private string nombre;
         private string direccion;
         private int telefono;
-        private List<Pedidos> listaPedidos;
+        private List<Pedidos> listaPedidos = new List<Pedidos>();
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
@@ -20,7 +20,18 @@ namespace tp1
             Direccion = direccion;
             Telefono = telefono;
         }
-        public void JornalACobrar() { }
+        public int JornalACobrar() {
+            int cantPedidosEntregados = 0;
+            const int precioPorEnvio = 500;
+            foreach (Pedidos pedido in ListaPedidos)
+            {
+                if (pedido.Estado == "Entregado")
+                {
+                    cantPedidosEntregados++;
+                }
+            }
+            return cantPedidosEntregados*precioPorEnvio;
+         }
         public void AgregarPedido(Pedidos nuevoPedido)
         {
             

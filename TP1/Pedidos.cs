@@ -5,7 +5,7 @@ namespace tp1
         private int nro;
         private string obs;
         private Cliente infoCliente;
-        private string estado;
+        private string estado; // Rec
 
         public string Obs { get => obs; set => obs = value; }
         public Cliente InfoCliente { get => infoCliente;}
@@ -33,11 +33,15 @@ namespace tp1
         }
         public void VerDireccionCliente()
         {
-
+            Console.WriteLine("La direccion del cliente "+ infoCliente.Nombre + "es: "+ infoCliente.Direccion);
         }
 
         public void VerDatosCliente()
         {
+            Console.WriteLine("----Info del Cliente---");
+            Console.WriteLine("Nombre: "+ infoCliente.Nombre);
+            Console.WriteLine("Telefono: "+ infoCliente.Telefono);
+            Console.WriteLine("Direccion: "+ infoCliente.Direccion);
         }
 
     }
