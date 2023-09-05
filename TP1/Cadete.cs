@@ -6,13 +6,13 @@ namespace tp1
         private string nombre;
         private string direccion;
         private int telefono;
-        private List<Pedidos> listaPedidos = new List<Pedidos>();
+        //private List<Pedidos> listaPedidos = new List<Pedidos>();// ListadoPedidos quitado en tp2
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public int Telefono { get => telefono; set => telefono = value; }
-        public List<Pedidos> ListaPedidos { get => listaPedidos; set => listaPedidos = value; }
+        //public List<Pedidos> ListaPedidos { get => listaPedidos; set => listaPedidos = value; }
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
             Id = id;
@@ -20,18 +20,8 @@ namespace tp1
             Direccion = direccion;
             Telefono = telefono;
         }
-        public int JornalACobrar() {
-            int cantPedidosEntregados = 0;
-            const int precioPorEnvio = 500;
-            foreach (Pedidos pedido in ListaPedidos)
-            {
-                if (pedido.Estado == "Entregado")
-                {
-                    cantPedidosEntregados++;
-                }
-            }
-            return cantPedidosEntregados*precioPorEnvio;
-         }
+        
+        /*En tp2 no va
         public void AgregarPedido(Pedidos nuevoPedido)
         {
             
@@ -49,7 +39,7 @@ namespace tp1
                 }
             }
             return cantPedidosRealizados;
-        }
+        }*/
         
 
     }

@@ -7,16 +7,20 @@ namespace tp1
         private Cliente infoCliente;
         private string estado; // Rec
 
+        private int idCadeteEncargado;
+
         public string Obs { get => obs; set => obs = value; }
         public Cliente InfoCliente { get => infoCliente;}
         public string Estado { get => estado; set => estado = value; }
         public int Nro { get => nro; }
+        public int IdCadeteEncargado { get => idCadeteEncargado; set => idCadeteEncargado = value; }
 
         public Pedidos(int nro)
         {
             this.nro = nro;
             this.obs = null;
             this.infoCliente = CrearClienteAleatorio(); // Crear cliente aleatorio
+            this.idCadeteEncargado = null;
             Estado = "EnPreparacion";
             
         }

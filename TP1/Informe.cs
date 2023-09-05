@@ -45,7 +45,15 @@ namespace tp1
             {
                 Console.WriteLine("");
                 Console.WriteLine("[Cadete "+cadete.Id+"]");
-                Console.WriteLine("Cantidad de Pedidos Entregados: "+ cadete.ListaPedidos.FirstOrDefault(pedido => pedido.Estado == "Entregado"));
+                int cantPedidos = 0;
+                foreach (Pedidos pedido in cadete.ListaPedidos)
+                {
+                    if (pedido.Estado =="Entregado")
+                    {
+                        cantPedidos ++;
+                    }
+                }
+                Console.WriteLine("Cantidad de Pedidos Entregados: "+ cantPedidos);
                 Console.Write("Nros de Pedidos EnCamino:");
                 foreach (Pedidos pedido in cadete.ListaPedidos)
                 {
