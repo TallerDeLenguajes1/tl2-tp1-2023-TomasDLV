@@ -28,7 +28,7 @@ namespace tp1
             Pedidos nuevoPedido = new Pedidos(NroPedidosCreados + 1); // Crea una instancia de Pedido ; NOTA: necesito AGREGAR OBS
             NroPedidosCreados += 1; // Incremento la cantidad de pedidos creados
             ListaPedidos.Add(nuevoPedido);
-            Console.WriteLine("Se creo el pedido nro: "+nuevoPedido.Nro+ " y se lo agrego a la lista");
+            //Console.WriteLine("Se creo el pedido nro: "+nuevoPedido.Nro+ " y se lo agrego a la lista");
         }
 
         public void AsignarCadeteAPedido(int idCadete,int idPedido)
@@ -39,71 +39,73 @@ namespace tp1
                 Pedidos pedidoBuscado = ListaPedidos.FirstOrDefault(pedido =>pedido.Nro == idPedido);
                 if (pedidoBuscado != null )
                 {
-                    if (pedidoBuscado.IdCadeteEncargado == null)
-                    {
-                        pedidoBuscado.IdCadeteEncargado = idCadete;
-                        Console.WriteLine("Pedido nro "+ idPedido +" asignado al cadete: " + cadeteBuscado.Nombre);
-                    }else
-                    {
-                        Console.WriteLine("El pedido ya tiene un cadete encargado.");
-                        Console.WriteLine("¿Quieres reemplazarlo? SI: 1 | NO: 0");
-                        if (Console.ReadLine()== "1")
-                        {
-                            pedidoBuscado.IdCadeteEncargado = idCadete;
-                            Console.WriteLine("Pedido nro "+ idPedido +" asignado al cadete: " + cadeteBuscado.Nombre);
-                        }else
-                        {
-                            Console.WriteLine("La asignacion de Pedido no fue concretada");
-                        }
-                    }
+                    pedidoBuscado.IdCadeteEncargado = idCadete;
+
+                    // if (pedidoBuscado.IdCadeteEncargado == null)
+                    // {
+                    //     pedidoBuscado.IdCadeteEncargado = idCadete;
+                    //     //Console.WriteLine("Pedido nro "+ idPedido +" asignado al cadete: " + cadeteBuscado.Nombre);
+                    // }else
+                    // {
+                    //     Console.WriteLine("El pedido ya tiene un cadete encargado.");
+                    //     Console.WriteLine("¿Quieres reemplazarlo? SI: 1 | NO: 0");
+                    //     if (Console.ReadLine()== "1")
+                    //     {
+                    //         pedidoBuscado.IdCadeteEncargado = idCadete;
+                    //         Console.WriteLine("Pedido nro "+ idPedido +" asignado al cadete: " + cadeteBuscado.Nombre);
+                    //     }else
+                    //     {
+                    //         Console.WriteLine("La asignacion de Pedido no fue concretada");
+                    //     }
+                    // }
                     
                 }else
                 {
-                    Console.WriteLine("El pedido que ingresaste no se encontro en la lista de pedidos");
+                    //Console.WriteLine("El pedido que ingresaste no se encontro en la lista de pedidos");
                 }
 
                 
             }
             else
             {
-                Console.WriteLine("No se encontro el cadete que ingresaste");
+                //Console.WriteLine("No se encontro el cadete que ingresaste");
             }
         }
 
 
-        public void CambiarEstado() // Este metodo recibe por parametro la id del pedido a entregar, busca que cadete lo posee y lo cambia de estado
+        public void CambiarEstado(int idPedido,int estado) // Este metodo recibe por parametro la id del pedido a entregar, busca que cadete lo posee y lo cambia de estado
         {
 
-            Console.WriteLine("Ingrese el ID del pedido a cambiar de estado: ");
+            // Console.WriteLine("Ingrese el ID del pedido a cambiar de estado: ");
             
-            int.TryParse(Console.ReadLine(), out int idPedido);
+            // int.TryParse(Console.ReadLine(), out int idPedido);
             Pedidos pedidoEncontrado = ListaPedidos.FirstOrDefault(pedido => pedido.Nro == idPedido);
 
             if (pedidoEncontrado != null)
             {
-                Console.WriteLine("Seleccione el estado al que cambiar:");
-                Console.WriteLine("a) Pendiente");
-                Console.WriteLine("b) En Camino");
-                Console.WriteLine("c) Entregado");
+                // Console.WriteLine("Seleccione el estado al que cambiar:");
+                // Console.WriteLine("a) Pendiente");
+                // Console.WriteLine("b) En Camino");
+                // Console.WriteLine("c) Entregado");
 
-                Console.Write("Opción: ");
-                string opcionEstado = Console.ReadLine();
+                // Console.Write("Opción: ");
+                //string opcionEstado = Console.ReadLine();
 
                 string nuevoEstado = "";
 
-                switch (opcionEstado.ToLower())
+                switch (estado)
                 {
-                    case "a":
+                    case 1:
                         nuevoEstado = "Pendiente";
                         break;
-                    case "b":
+                    case 2:
                         nuevoEstado = "EnCamino";
                         break;
-                    case "c":
+                    case 3:
                         nuevoEstado = "Entregado";
                         break;
                     default:
-                        Console.WriteLine("Opción no válida.");
+                        //Console.WriteLine("Opción no válida.");
                         return;
                 }
                 pedidoEncontrado.Estado = nuevoEstado;
@@ -111,7 +113,7 @@ namespace tp1
             }
             else
             {
-                Console.WriteLine("Ingrese un ID válido.");
+                //Console.WriteLine("Ingrese un ID válido.");
             }
         }
         public void EliminarPedido(int idPedido){ // Esta funcion da de alta un pedio por una id recibida
@@ -119,12 +121,12 @@ namespace tp1
             if (pedidoEncontrado != null)
             {
                 ListaPedidos.Remove(pedidoEncontrado);
-                Console.WriteLine("Se elimino el Pedido "+ pedidoEncontrado.Nro + " exitosamente");
+                //Console.WriteLine("Se elimino el Pedido "+ pedidoEncontrado.Nro + " exitosamente");
             }else
             {
-                Console.WriteLine("No se encontro el pedido para eliminar");
+                //Console.WriteLine("No se encontro el pedido para eliminar");
             }
-            Console.WriteLine("No se encontro el pedido " + idPedido + ".");
+            ///Console.WriteLine("No se encontro el pedido " + idPedido + ".");
         }
         public double JornalACobrar(int idCadete) {
             double cantPedidosEntregados = 0;
