@@ -5,7 +5,7 @@ namespace tp1
         private int montoTotalGanado;
         private int totalEnvios;
         private double promedioEnviosXCadete;
-        private Cadeteria cadeteria ;
+        private Cadeteria cadeteria = null;
         public int MontoTotalGanado { get => montoTotalGanado; set => montoTotalGanado = value; }
         public int TotalEnvios { get => totalEnvios; set => totalEnvios = value; }
         public double PromedioEnviosXCadete { get => promedioEnviosXCadete; set => promedioEnviosXCadete = value; }
@@ -14,18 +14,15 @@ namespace tp1
         public Informe(Cadeteria cadeteria)
         {
             Cadeteria = cadeteria;
-            foreach (Cadete cadete in Cadeteria.ListaCadetes)
+            foreach (Pedidos pedido in Cadeteria.ListaPedidos)
             {
-                foreach (Pedidos pedido in cadete.ListaPedidos)
+                if (pedido.Estado == "Entregado")
                 {
-                    if (pedido.Estado == "Entregado")
-                    {
-                        TotalEnvios++;
-                    }
+                    totalEnvios++;
                 }
             }
             MontoTotalGanado = TotalEnvios*500;
-            if (Cadeteria.ListaCadetes.Count != 0)
+            if (Cadeteria.ListaCadetes != null)
             {
                 PromedioEnviosXCadete = TotalEnvios/Cadeteria.ListaCadetes.Count;
             }
@@ -39,15 +36,26 @@ namespace tp1
             Console.WriteLine("Promedio de Envios por cadete: "+PromedioEnviosXCadete);
             Console.WriteLine("Monto total generado: "+ MontoTotalGanado);
             Console.WriteLine("");
-            Console.WriteLine("*INFORMACION POR CLIENTES");
+            Console.WriteLine("*INFORMACION POR CADETES");
+
+            Console.WriteLine(Cadeteria.ListaCadetes[0].Nombre);
+            
             
             foreach (Cadete cadete in Cadeteria.ListaCadetes)
             {
                 Console.WriteLine("");
-                Console.WriteLine("[Cadete "+cadete.Id+"]");
-                Console.WriteLine("Cantidad de Pedidos Entregados: "+ cadete.ListaPedidos.FirstOrDefault(pedido => pedido.Estado == "Entregado"));
+                Console.WriteLine("[Cadete "+cadete.Nombre+"]");
+                int cantPedidos = 0;
+                foreach (Pedidos pedido in Cadeteria.ListaPedidos)
+                {
+                    if (pedido.Estado =="Entregado")
+                    {
+                        cantPedidos ++;
+                    }
+                }
+                Console.WriteLine("Cantidad de Pedidos Entregados: "+ cantPedidos);
                 Console.Write("Nros de Pedidos EnCamino:");
-                foreach (Pedidos pedido in cadete.ListaPedidos)
+                foreach (Pedidos pedido in Cadeteria.ListaPedidos)
                 {
                     if (pedido.Estado == "EnCamino")
                     {
@@ -56,7 +64,7 @@ namespace tp1
                 }
                 Console.WriteLine("");
                 Console.Write("Nros de Pedidos Entregados:");
-                foreach (Pedidos pedido in cadete.ListaPedidos)
+                foreach (Pedidos pedido in Cadeteria.ListaPedidos)
                 {
                     if (pedido.Estado == "Entregado")
                     {
